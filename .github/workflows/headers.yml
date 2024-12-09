@@ -1,4 +1,4 @@
-name: Add CORS headers
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -14,33 +14,32 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: Debug Directory Structure
+      - name: Setup deployment
         run: |
-          echo "Current directory contents:"
-          ls -la
-          echo "Well-known directory contents:"
-          ls -la .well-known/
-      
-      - name: Create site directory
-        run: |
+          # Create the site structure
           mkdir -p _site/.well-known
-          cp -v .well-known/stellar.toml _site/.well-known/
-          echo "Created _site directory structure:"
-          ls -la _site/.well-known/
+          
+          # Copy files
+          cp .well-known/stellar.toml _site/.well-known/
+          cp index.html _site/
           
           # Create headers file
-          echo "/*" > _site/_headers
-          echo "  Access-Control-Allow-Origin: *" >> _site/_headers
-          echo "  Access-Control-Allow-Methods: GET" >> _site/_headers
-          echo "  Access-Control-Allow-Headers: Content-Type" >> _site/_headers
+          cat > _site/_headers << EOL
+          /*
+            Access-Control-Allow-Origin: *
+            Access-Control-Allow-Methods: GET
+            Access-Control-Allow-Headers: Content-Type
+          EOL
           
-          echo "_headers content:"
-          cat _site/_headers
+          # Debug output
+          echo "Site directory structure:"
+          ls -R _site/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./_site
-          keep_files: false  # Changed to false to ensure clean deployment
-          commit_message: "Deploy stellar.toml and CORS headers"
+          cname: charlesoxendine.github.io  # Remove this line if you don't have a custom domain
+          keep_files: false
+          force_orphan: true  # This ensures clean deployment
