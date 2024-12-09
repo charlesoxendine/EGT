@@ -14,23 +14,33 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-
+      - name: Debug Directory Structure
+        run: |
+          echo "Current directory contents:"
+          ls -la
+          echo "Well-known directory contents:"
+          ls -la .well-known/
+      
       - name: Create site directory
         run: |
           mkdir -p _site/.well-known
-          cp .well-known/stellar.toml _site/.well-known/
+          cp -v .well-known/stellar.toml _site/.well-known/
+          echo "Created _site directory structure:"
+          ls -la _site/.well-known/
+          
+          # Create headers file
           echo "/*" > _site/_headers
           echo "  Access-Control-Allow-Origin: *" >> _site/_headers
           echo "  Access-Control-Allow-Methods: GET" >> _site/_headers
           echo "  Access-Control-Allow-Headers: Content-Type" >> _site/_headers
+          
+          echo "_headers content:"
+          cat _site/_headers
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./_site
-          keep_files: true
+          keep_files: false  # Changed to false to ensure clean deployment
+          commit_message: "Deploy stellar.toml and CORS headers"
