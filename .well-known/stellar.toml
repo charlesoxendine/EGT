@@ -7,18 +7,18 @@ ACCOUNTS=[
 
 # Documentation
 [DOCUMENTATION]
-ORG_NAME="Your Organization Name"
+ORG_NAME="EGT"
 ORG_URL="https://your-webflow-site.com"
 ORG_LOGO="https://your-webflow-site.com/logo.png"
 ORG_DESCRIPTION="A brief description of your organization"
 
 # Currency Information
 [[CURRENCIES]]
-code="USD"
+code="EGT"
 issuer="GA6E6QV7SZZ5SW2AI7TBXP2FGFYMMP4ZM56ST7KDV52T7GIRHZT5WQ64"
 display_decimals=2
-name="US Dollar"
-desc="US Dollar issued by Your Organization"
+name="EGT"
+desc="EGT issued to the world"
 conditions="Terms of use and conditions for the asset"
 image="https://your-webflow-site.com/usd-icon.png"
 is_asset_anchored=true
